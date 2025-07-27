@@ -5,7 +5,7 @@
   "app": {
     "allowIndexing": "true",
     "basePathName": "",
-    "domain": "https://photo-grid-demo.netlify.app",
+    "domain": "https://photography.nederal.com",
     "port": "3333",
     "previewPathName": "photo"
   },
@@ -13,11 +13,11 @@
     "name": "John Doe",
     "links": {
       "github": "https://github.com/kwickramasekara/photo-grid",
-      "app": "https://photo-grid-demo.netlify.app/"
+      "app": "https://photography.nederal.com"
     }
   },
   "metadata": {
-    "description": "Photography Portfolio of John Doe.",
+    "description": "Photography Portfolio of Oliver Nederal.",
     "language": "en",
     "title": "Photo Grid"
   },
