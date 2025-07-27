@@ -23,17 +23,45 @@ export default () => {
   const webhookUrl = import.meta.env.SANITY_STUDIO_HOST_WEBHOOK_URL;
   const webhookMethod =
     import.meta.env.SANITY_STUDIO_HOST_WEBHOOK_METHOD || "POST";
+  const coolifyApiToken = import.meta.env.COOLIFY_API_TOKEN;
+
   const toast = useToast();
 
   const triggerWebhook = async () => {
-    // TODO: Check for errors and toast errors
-    fetch(webhookUrl, { method: webhookMethod });
+    if (!webhookUrl || !coolifyApiToken) {
+      toast.push({
+        status: "error",
+        title: "Missing configuration",
+        description:
+          "Webhook URL or API token not set. Check environment variables.",
+      });
+      return;
+    }
 
-    toast.push({
-      status: "success",
-      title: "Triggered Webhook",
-      description: "Please allow a few minutes for the build and deployment.",
-    });
+    try {
+      const response = await fetch(webhookUrl, {
+        method: webhookMethod,
+        headers: {
+          Authorization: `Bearer ${coolifyApiToken}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+      }
+
+      toast.push({
+        status: "success",
+        title: "Triggered Webhook",
+        description: "Please allow a few minutes for the build and deployment.",
+      });
+    } catch (error) {
+      toast.push({
+        status: "error",
+        title: "Webhook Trigger Failed",
+        description: String(error),
+      });
+    }
   };
 
   const renderNoWebhook = () => {
@@ -102,7 +130,7 @@ export default () => {
                           padding={2}
                           iconRight={LaunchIcon}
                           space={2}
-                        ></Button>
+                        />
                       </a>
                     </Inline>
 
